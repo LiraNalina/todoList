@@ -10,13 +10,13 @@ export type TaskType = {
 export type TaskPropsType = {
     id: string
     titleList: string
-    // titleTask: string
     tasks: TaskType[]
     deleteTask: (id: string, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     selectWhichType: (value: SelectType, todolistId: string) => void
     changeIsDone: (taskId: string, isDone: boolean, todolistId: string) => void
     select: SelectType
+    deleteTodoL: (todolistId: string) => void
 }
 
 export const TodoList = (props: TaskPropsType) => {
@@ -38,27 +38,39 @@ export const TodoList = (props: TaskPropsType) => {
         setNewTaskName(e.currentTarget.value)
     }
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    /* const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.charCode === 13) {
             onClickNewTaskHandler();
         }
+    } */
+
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") { onClickNewTaskHandler() }
     }
 
     const onDeleteHandler = (id: string) => {
         props.deleteTask(id, props.id)
     }
 
+    const deleteTododList = () => {
+        props.deleteTodoL(props.id)
+    }
+
+
     return (
         <div>
-            <h2>{props.titleList}</h2>
+            <h2>{props.titleList} <button onClick={deleteTododList}>x</button></h2>
             <input
                 value={newTaskName}
                 className={error ? "error" : ""}
                 onChange={onNewTaskInputHandler}
-                onKeyPress={onKeyPressHandler} />
+                onKeyDown={onKeyDown} />
+
             <button onClick={onClickNewTaskHandler}>add</button>
-            {error && <div className="error-message">Field is required</div>}
+
+            {error && <div className="error-message">{error}</div>}
+
             <ul>
                 {
                     props.tasks.map(t => {
@@ -71,6 +83,7 @@ export const TodoList = (props: TaskPropsType) => {
                                     key={t.id}>
                                     <input
                                         onChange={onChangeIsDoneHandler}
+                                        onKeyDown={onKeyDown}
                                         type="checkbox"
                                         checked={t.isDone} />{t.titleTask}
                                     <button
@@ -95,3 +108,4 @@ export const TodoList = (props: TaskPropsType) => {
         </div>
     )
 }
+
