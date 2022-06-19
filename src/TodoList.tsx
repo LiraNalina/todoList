@@ -24,7 +24,6 @@ export const TodoList = (props: TaskPropsType) => {
     const [newTaskName, setNewTaskName] = useState('')
     const [error, setError] = useState<string | null>(null)
 
-
     const onClickNewTaskHandler = () => {
         if (newTaskName.trim() !== "") {
             props.addTask(newTaskName, props.id)
