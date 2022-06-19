@@ -56,7 +56,6 @@ export const TodoList = (props: TaskPropsType) => {
         props.deleteTodoL(props.id)
     }
 
-
     return (
         <div>
             <h2>{props.titleList} <button onClick={deleteTododList}>x</button></h2>
